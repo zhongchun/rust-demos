@@ -1,3 +1,4 @@
+use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::types::PyDict;
 
@@ -25,6 +26,15 @@ fn add(a:u64, b:u64) -> u64 {
     a + b
 }
 
+#[pyfunction]
+fn check_positive(x: i32) -> PyResult<()> {
+    if x < 0 {
+        Err(PyValueError::new_err("x is negative"))
+    } else {
+        Ok(())
+    }
+}
+
 /// A Python module implemented in Rust.
 /// The name of this function must match the `lib.name` setting in the
 /// `Cargo.toml`, else Python will not be able to import the module.
@@ -34,5 +44,6 @@ fn string_sum(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(double, m)?)?;
     m.add_function(wrap_pyfunction!(num_kwds, m)?)?;
     m.add_function(wrap_pyfunction!(add, m)?)?;
+    m.add_function(wrap_pyfunction!(check_positive, m)?)?;
     Ok(())
 }
