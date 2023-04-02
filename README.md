@@ -116,3 +116,8 @@ pub trait Iterator {
     fn next(&mut self) -> Option<Self::Item>;
 }
 ```
+
+## Object-Oriented Programming Features of Rust
+
+OOP languages share certain common characteristics, namely objects, encapsulation,
+and inheritance.
