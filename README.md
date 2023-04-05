@@ -14,6 +14,7 @@
     - [Common Collections](#common-collections)
     - [Smart Pointers](#smart-pointers)
     - [Fearless Concurrency](#fearless-concurrency)
+    - [Patterns and Matching](#patterns-and-matching)
 
 <!-- /TOC -->
 ## Docs
@@ -193,3 +194,16 @@ while you’re working on it rather than potentially after it has been shipped t
 production. We’ve nicknamed this aspect of Rust fearless concurrency. Fearless
 concurrency allows you to write code that is free of subtle bugs and is easy to
 refactor without introducing new bugs.
+
+## Patterns and Matching
+
+Patterns are a special syntax in Rust for matching against the structure of types,
+both complex and simple. Using patterns in conjunction with match expressions
+and other constructs gives you more control over a program’s control flow. A
+pattern consists of some combination of the following:
+
+- Literals
+- Destructured arrays, enums, structs, or tuples
+- Variables
+- Wildcards
+- Placeholders
