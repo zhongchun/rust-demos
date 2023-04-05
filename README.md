@@ -12,6 +12,7 @@
         - [Iterator](#iterator)
     - [Object-Oriented Programming Features of Rust](#object-oriented-programming-features-of-rust)
     - [Common Collections](#common-collections)
+    - [Smart Pointers](#smart-pointers)
 
 <!-- /TOC -->
 ## Docs
@@ -147,3 +148,24 @@ be known at compile time and grow or shrink as the program runs.
 - A *string* is a collection of characters.
 - A *hash map* allows you to associate a value with a particular key. It's a
 particular implementation of the more general data structure called a map.
+
+## Smart Pointers
+
+The concept of smart pointers isn’t unique to Rust: smart pointers originated
+in C++ and exist in other languages as well. Rust has a variety of smart pointers
+defined in the standard library that provide functionality beyond that provided
+by references.
+
+Rust, with its concept of ownership and borrowing, has an additional difference
+between references and smart pointers: while references only borrow data, in
+many cases, smart pointers own the data they point to.
+
+Smart pointers are usually implemented using structs. Unlike an ordinary struct,
+smart pointers implement the `Deref` and `Drop` traits.
+
+The most common smart pointers in the standard library:
+
+- `Box<T>` for allocating values on the heap
+- `Rc<T>` a reference counting type that enables multiple ownership
+- `Ref<T>` and `RefMut<T>`, accessed through `RefCell<T>`, a type that enforces
+the borrowing rules at runtime instead of compile time
