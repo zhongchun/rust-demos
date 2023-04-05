@@ -1,8 +1,22 @@
 # QuickStart
+<!-- TOC -->
 
+- [QuickStart](#quickstart)
+    - [Docs](#docs)
+    - [Managing Growing Projects with Packages, Crates and Modules](#managing-growing-projects-with-packages-crates-and-modules)
+        - [Packages and Crates](#packages-and-crates)
+        - [Defining Modules to Control Scope and Privacy](#defining-modules-to-control-scope-and-privacy)
+            - [Moduels Cheat Sheet](#moduels-cheat-sheet)
+    - [Iterators and Closures](#iterators-and-closures)
+        - [Closures: Anonymous Functions that Capture Their Environment](#closures-anonymous-functions-that-capture-their-environment)
+        - [Iterator](#iterator)
+    - [Object-Oriented Programming Features of Rust](#object-oriented-programming-features-of-rust)
+    - [Common Collections](#common-collections)
+
+<!-- /TOC -->
 ## Docs
 
-- Examples: https://doc.rust-lang.org/rust-by-example/index.html
+- Rust Examples, see <https://doc.rust-lang.org/rust-by-example/index.html>
 
 ## Managing Growing Projects with Packages, Crates and Modules
 
@@ -121,3 +135,15 @@ pub trait Iterator {
 
 OOP languages share certain common characteristics, namely objects, encapsulation,
 and inheritance.
+
+## Common Collections
+
+Rsut's standard library includes a number of very useful data structures called
+collections. Unlike the built-in array and tuple types, the data these collections
+point to is stored on the heap, which means the amount of data does not need to
+be known at compile time and grow or shrink as the program runs.
+
+- A *vector* allows you to store a variable number of values next to each other.
+- A *string* is a collection of characters.
+- A *hash map* allows you to associate a value with a particular key. It's a
+particular implementation of the more general data structure called a map.
