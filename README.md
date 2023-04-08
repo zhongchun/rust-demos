@@ -16,6 +16,13 @@
     - [Fearless Concurrency](#fearless-concurrency)
     - [Patterns and Matching](#patterns-and-matching)
     - [Advanced Features](#advanced-features)
+        - [Macros](#macros)
+            - [The Difference Between Macros and Functions](#the-difference-between-macros-and-functions)
+            - [Declarative Macros with macro_rules! for General Metaprogramming](#declarative-macros-with-macro_rules-for-general-metaprogramming)
+            - [Procedural Macros for Generating Code from Attributes](#procedural-macros-for-generating-code-from-attributes)
+                - [Custom derive macros](#custom-derive-macros)
+                - [Attribute-like macros](#attribute-like-macros)
+                - [Function-like macros](#function-like-macros)
 
 <!-- /TOC -->
 ## Docs
@@ -219,3 +226,92 @@ syntax, supertraits, and the newtype pattern in relation to traits
 and dynamically sized types
 - Advanced functions and closures: function pointers and returning closures
 - Macros: ways to define code that defines more code at compile time
+
+### Macros
+
+The term macro refers to a family of features in Rust: *declarative macros* with
+`macro_rules!` and three kinds of *procedural macros*:
+
+- Custom `#[derive]` macros that specify code added with the `derive` attribute
+used on structs and enums
+- Attributed-like macros that define custom attributes usable on an item
+- Function-like macros that look like function calls but operate on the token
+specified as their argument
+
+#### The Difference Between Macros and Functions
+
+Fundamentally, macros are a way of writing code that writes other code, which is
+known as *metaprogramming*.
+
+- Metaprogramming is usefurl for reducing the amount of code you have to write
+and maintain, which is also one of the roles of functions. However, macros have
+some additional powers than functions don't.
+  - A function signature must delcare the number and type of parameters the
+  function has. Macros, on the other hand, can take a variable number of parameters.
+  Also, macros are expandted before the compiler interpres the meaning of the code,
+  so a macro can, for example, implement a trait on a given type. A function can't,
+  because it gets called at runtime and a trait needs to be implemented at compile
+  time.
+  - The downside to implementing a macro instead of a function is that macro
+  definitions are more complex than function definitions because you're writing
+  Rust code that writes Rust code. Due to this indirection, macro definitions are
+  generally more difficult to read, understand, and maintain than function definitions.
+- You must define macros or bring them into scope before you call them in a file,
+as opposed to functions you can define anywhere and call anywhere.
+
+#### Declarative Macros with `macro_rules!` for General Metaprogramming
+
+The most widely used form of macros in Rust is the *declarative marcro*. These
+are also sometimes referred to as "macros by example", "`macro_rules!` macros"
+or just plain "macros". At their core, declarative macros allow you to write
+something similar to a Rust `match` expression, like `println!`, `vec!`.
+
+#### Procedural Macros for Generating Code from Attributes
+
+The second form of macros is the *procedural macro*, which acts more like a
+function (and is a type of procedure). Procedural macros accept some code as
+an input, operate on that code, and produce some code as an output rather than
+matching agginst patterns and replcaing the code with other code as declarative
+maacros do. The three kinds of procedural macros are *custom derive*,
+*attribute-like*, and *function like*, and all work in a similar fashion.
+
+##### Custom derive macros
+
+`derive` only works for structs and enums.
+
+##### Attribute-like macros
+
+Attribute-like macros are similar to custom derive macros, but instead of
+generating code for the `derive` attribute, they allow youo to create new
+attributes. They are more flexible: `derive` only works for structs and enums;
+attributes can be applied to other item as well, such as functions.
+
+Attribute-like macros work the same way as custom derive macros: you create a
+crate with the `proc-macro` crate type and implement a function that generates
+the code you want!
+
+##### Function-like macros
+
+Function-like macros define macros that look like function calls. Similarly to
+`macro_rules!` macros, they're more flexible than functions; for example, they
+can take an unknown number of arguments. However, `macro_rules!` macros can be
+defined only using the match-like syntax. Function-like macros take a `TokenStream`
+parameter and their definition manipulates that `TokenStream` using Rust code as
+the other two types of procedural macros. An example of a function-like macro is
+an sql! macro that might be called like so:
+
+```rust
+let sql = sql!(SELECT * FROM posts WHERE id=1);
+```
+
+This macro would parse the SQL statement inside it and check that it’s
+syntactically correct, which is much more complex processing than a
+`macro_rules!` macro can do. The sql! macro would be defined like this:
+
+```rust
+#[proc_macro]
+pub fn sql(input: TokenStream) -> TokenStream {
+```
+
+This definition is similar to the custom derive macro’s signature: we receive
+the tokens that are inside the parentheses and return the code we wanted to generate.
